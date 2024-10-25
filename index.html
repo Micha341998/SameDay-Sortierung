@@ -1,0 +1,184 @@
+<html><head><base href="https://websim.example.com/grid-game/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SameDay-Sortierung</title>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 10px;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 24px;
+        margin: 10px 0;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(20, 40px);
+        gap: 2px;
+        margin: 20px;
+        padding: 10px;
+        background-color: #ddd;
+        border-radius: 5px;
+    }
+
+    .grid-item {
+        width: 40px;
+        height: 40px;
+        background-color: white;
+        border: 1px solid #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        user-select: none;
+        font-weight: bold;
+    }
+
+    .grid-item:hover {
+        transform: scale(1.1);
+    }
+
+    .green {
+        background-color: #32CD32;
+        color: white;
+    }
+
+    .yellow {
+        background-color: #FFD700;
+    }
+
+    .blue {
+        background-color: #0066FF;
+        color: white;
+    }
+
+    .red {
+        background-color: #FF0000;
+        color: white;
+    }
+
+    #reset-button {
+        margin: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #reset-button:hover {
+        background-color: #45a049;
+    }
+
+    /* Responsive Design für Smartphones */
+    @media screen and (max-width: 768px) {
+        h1 {
+            font-size: 20px;
+        }
+
+        .grid-container {
+            grid-template-columns: repeat(10, 1fr);
+            margin: 10px;
+            padding: 5px;
+            gap: 1px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .grid-item {
+            width: auto;
+            height: 35px;
+            font-size: 14px;
+        }
+
+        #reset-button {
+            margin: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+    }
+
+    /* Noch kleinere Bildschirme */
+    @media screen and (max-width: 350px) {
+        .grid-container {
+            grid-template-columns: repeat(8, 1fr);
+        }
+
+        .grid-item {
+            height: 30px;
+            font-size: 12px;
+        }
+    }
+</style>
+</head>
+<body>
+    <h1>SameDay-Sortierung</h1>
+    <div class="grid-container" id="grid"></div>
+    <button id="reset-button">Alles zurücksetzen</button>
+
+    <script>
+        const gridContainer = document.getElementById('grid');
+        const resetButton = document.getElementById('reset-button');
+
+        // Erstelle das Raster mit Zahlen von 1 bis 200
+        for (let i = 1; i <= 200; i++) {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            gridItem.textContent = i;
+            gridItem.addEventListener('click', toggleColor);
+            gridContainer.appendChild(gridItem);
+        }
+
+        function toggleColor(event) {
+            const element = event.target;
+            
+            if (!element.classList.contains('green') && 
+                !element.classList.contains('yellow') && 
+                !element.classList.contains('blue') &&
+                !element.classList.contains('red')) {
+                element.classList.add('green');
+            } 
+            else if (element.classList.contains('green')) {
+                element.classList.remove('green');
+                element.classList.add('yellow');
+            } 
+            else if (element.classList.contains('yellow')) {
+                element.classList.remove('yellow');
+                element.classList.add('blue');
+            }
+            else if (element.classList.contains('blue')) {
+                element.classList.remove('blue');
+                element.classList.add('red');
+            }
+            else if (element.classList.contains('red')) {
+                element.classList.remove('red');
+            }
+        }
+
+        resetButton.addEventListener('click', () => {
+            const gridItems = document.querySelectorAll('.grid-item');
+            gridItems.forEach(item => {
+                item.classList.remove('green', 'yellow', 'blue', 'red');
+            });
+        });
+
+        // Verhindern von Zoom auf mobilen Geräten beim Doppeltippen
+        document.addEventListener('touchend', function(event) {
+            event.preventDefault();
+            event.target.click();
+        }, false);
+    </script>
+</body>
+</html>
